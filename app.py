@@ -8,10 +8,16 @@ import urllib.parse
 api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
 genai.configure(api_key=api_key)
 
-# モデルの指定（一番安定している1.5 Flash）
-model_name = 'gemini-1.5-flash' 
-model = genai.GenerativeModel(model_name)
+# --- ここから ---
+# 利用可能なモデルを自動で探す（local環境で成功した書き方）
+available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+if available_models:
+    model_name = available_models[0] # 見つかった最新モデルを自動セット
+else:
+    model_name = 'gemini-2.0-flash' # 万が一のための保険
 
+model = genai.GenerativeModel(model_name)
+# --- ここまで ---
 # --- 2. 画面UI（入力欄） ---
 st.title("推し詠み 🌸")
 st.write("キャラクターの関係性に寄り添った短歌を生成します")
