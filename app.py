@@ -23,9 +23,9 @@ else:
 st.title("推し詠み 🌸")
 st.write("キャラクターの関係性に寄り添った短歌を生成します")
 
-sender = st.text_input("詠み手（誰が）", "五条悟")
-recipient = st.text_input("宛て先（誰に）", "夏油傑")
-relationship = st.text_area("関係性・背景", "かつて最強の二人だったが、道を違えた。戻らない青い春への決別。")
+sender = st.text_input("詠み手（誰が）", value="")
+recipient = st.text_input("宛て先（誰に）", value="")
+relationship = st.text_area("関係性・背景", value="")
 
 # 3. 実行ボタンが押された時の処理
 if st.button("短歌を詠む"):
@@ -47,7 +47,34 @@ if st.button("短歌を詠む"):
     [解説]
     """
     
-    # 5. AIにリクエストを投げて結果を表示
-    response = model.generate_content(prompt)
-    st.success("完成しました！")
-    st.write(response.text)
+   # 5. AIにリクエストを投げて結果を表示
+response = model.generate_content(prompt)
+st.success("完成しました！")
+
+# 出力結果をきれいに見せる
+result_text = response.text
+
+# 短歌と解説を分けて表示する工夫（簡易版）
+st.markdown(f"""
+<div style="background-color: #f0f2f6; padding: 20px; border-radius: 10px; border-left: 5px solid #ff4b4b;">
+    <h3 style="color: #31333f; margin-top: 0;">詠みあげられた一首</h3>
+    <p style="font-size: 24px; font-family: 'Sawarabi Mincho', serif; font-weight: bold; line-height: 1.6;">
+        {result_text.split('解説：')[0].replace('短歌：', '').strip()}
+    </p>
+    <hr>
+    <p style="font-size: 14px; color: #555;">
+        {result_text.split('解説：')[-1].strip() if '解説：' in result_text else ""}
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+
+import urllib.parse
+
+# 短歌の内容をURL用に変換
+tanka_only = result_text.split('解説：')[0].replace('短歌：', '').strip()
+share_text = f"【推し詠み】\n{sender}から{recipient}へ贈る短歌：\n\n{tanka_only}\n\n#推し詠み #生成AI"
+share_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(share_text)}&url={urllib.parse.quote('https://oshi-yomi.streamlit.app/')}"
+
+# シェアボタンの設置
+st.markdown(f'<a href="{share_url}" target="_blank"><button style="background-color: #1DA1F2; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer;">X(Twitter)でシェアする</button></a>', unsafe_allow_html=True)
