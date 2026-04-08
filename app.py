@@ -17,9 +17,9 @@ st.title("推し詠み 🌸")
 st.write("キャラクターの関係性に寄り添った短歌を生成します")
 
 # value="" で初期値を空にし、placeholderでヒントを表示
-sender = st.text_input("詠み手（誰が）", value="", placeholder="例：五条悟")
-recipient = st.text_input("宛て先（誰に）", value="", placeholder="例：夏油傑")
-relationship = st.text_area("関係性・背景", value="", placeholder="例：かつて最強の二人だったが、道を違えた。戻らない青い春への決別。")
+sender = st.text_input("詠み手（誰が）", value="")
+recipient = st.text_input("宛て先（誰に）", value="")
+relationship = st.text_area("関係性・背景", value="")
 
 # --- 3. ボタン実行処理 ---
 if st.button("短歌を詠む"):
