@@ -8,9 +8,8 @@ import urllib.parse
 api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
 genai.configure(api_key=api_key)
 
-# バージョン指定を明示的に行うことで、404エラーを回避します
-# （今の環境で最も安定して見つかる書き方です）
-model = genai.GenerativeModel(model_name='models/gemini-1.5-flash')
+# 上記がダメだった場合のみ、こちらを試してください
+model = genai.GenerativeModel(model_name='models/gemini-2.0-flash')
 
 # --- 2. 画面UI（入力欄） ---
 st.title("推し詠み 🌸")
