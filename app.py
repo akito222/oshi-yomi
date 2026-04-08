@@ -6,22 +6,11 @@ import urllib.parse
 # --- 1. 初期設定 ---
 # APIキーの読み込み (Streamlit CloudのSecretsから)
 api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
-
-# 【この1行を追加】読み込まれたキーの先頭5文字だけを画面に表示する
-st.info(f"🔍 デバッグ：現在読み込まれているキーの先頭5文字は「 {api_key[:5]} 」です")
-
 genai.configure(api_key=api_key)
 
-# --- ここから ---
-# 利用可能なモデルを自動で探す（local環境で成功した書き方）
-available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-if available_models:
-    model_name = available_models[0] # 見つかった最新モデルを自動セット
-else:
-    model_name = 'gemini-2.0-flash' # 万が一のための保険
+# 【ここを修正】一覧検索をやめて、一番安定しているモデルを直接指定する
+model = genai.GenerativeModel('gemini-1.5-flash')
 
-model = genai.GenerativeModel(model_name)
-# --- ここまで ---
 # --- 2. 画面UI（入力欄） ---
 st.title("推し詠み 🌸")
 st.write("キャラクターの関係性に寄り添った短歌を生成します")
