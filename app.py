@@ -8,8 +8,37 @@ import urllib.parse
 api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
 genai.configure(api_key=api_key)
 
-# 上記がダメだった場合のみ、こちらを試してください
-model = genai.GenerativeModel(model_name='models/gemini-2.0-flash')
+# --- 修正後のAIリクエスト部分 ---
+            try:
+                # 試すモデルの優先順位リスト（2.0がダメなら1.5、1.5がダメなら8B）
+                models_to_try = [
+                    'gemini-2.0-flash', 
+                    'gemini-1.5-flash', 
+                    'gemini-1.5-flash-8b'
+                ]
+                
+                response = None
+                last_error = None
+
+                for m_name in models_to_try:
+                    try:
+                        # モデルを一つずつ試していく
+                        temp_model = genai.GenerativeModel(m_name)
+                        response = temp_model.generate_content(prompt)
+                        if response:
+                            break # 成功したらループを抜ける
+                    except Exception as e:
+                        last_error = e
+                        continue # 失敗したら次のモデルへ
+                
+                if response is None:
+                    # すべてのモデルで制限がかかっていた場合
+                    raise last_error
+
+                # 成功した場合の表示処理
+                st.success("完成しました！")
+                result_text = response.text
+                # ...（以下、表示やシェアボタンの処理はそのまま）
 
 # --- 2. 画面UI（入力欄） ---
 st.title("推し詠み 🌸")
