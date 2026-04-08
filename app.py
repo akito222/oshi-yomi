@@ -10,7 +10,7 @@ api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeL
 # 【この1行を追加】読み込まれたキーの先頭5文字だけを画面に表示する
 st.info(f"🔍 デバッグ：現在読み込まれているキーの先頭5文字は「 {api_key[:5]} 」です")
 
-genai.configure(api_key=api_key)genai.configure(api_key=api_key)
+genai.configure(api_key=api_key)
 
 # --- ここから ---
 # 利用可能なモデルを自動で探す（local環境で成功した書き方）
