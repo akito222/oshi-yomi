@@ -5,7 +5,7 @@ import urllib.parse
 
 # --- 1. 初期設定 ---
 # APIキーの読み込み (Streamlit CloudのSecretsから)
-api_key = st.secrets.get("GEMINI_API_KEY") or "あなたの今のAPIキー"
+api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
 genai.configure(api_key=api_key)
 
 # モデルの指定（一番安定している1.5 Flash）
@@ -83,4 +83,4 @@ if st.button("短歌を詠む"):
             
             # それ以外の予期せぬエラーが起きた場合
             except Exception as e:
-                st.error("⚠️ 予期せぬエラーが発生しました。時間を置いてお試しください。")
+                st.error(f"⚠️ エラーの正体: {e}")
