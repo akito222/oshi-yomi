@@ -8,8 +8,7 @@ import urllib.parse
 api_key = st.secrets.get("GEMINI_API_KEY") or "AIzaSyBu3QEQw4P6t20zbhQQpi21dIyeLg_p3qQ"
 genai.configure(api_key=api_key)
 
-# これに戻します（あきとさんが最初に書いていた最新モデル！）
-model = genai.GenerativeModel('gemini-2.0-flash')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # --- 2. 画面UI（入力欄） ---
 st.title("推し詠み 🌸")
